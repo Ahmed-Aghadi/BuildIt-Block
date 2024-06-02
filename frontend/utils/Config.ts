@@ -6,6 +6,7 @@ import {
   scrollSepolia,
   sepolia,
   moonbaseAlpha,
+  polygonAmoy,
 } from "wagmi/chains";
 import { defineChain } from "viem";
 
@@ -34,6 +35,7 @@ const config = getDefaultConfig({
     scrollSepolia,
     sepolia,
     metisSepolia,
+    polygonAmoy,
     moonbaseAlpha,
   ],
   ssr: true, // If your dApp uses server side rendering (SSR)
