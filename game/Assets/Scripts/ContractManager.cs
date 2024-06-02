@@ -183,7 +183,7 @@ public class ContractManager : MonoBehaviour
     {
         return new Dictionary<string, string>()
         {
-            { "SEPOLIA", "11155111" },
+            { "Polygon Amoy", "80002" },
             { "AVALANCHE FUJI", "43113" },
         };
     }
@@ -191,8 +191,8 @@ public class ContractManager : MonoBehaviour
     {
         return new Dictionary<string, string>()
         {
-            { "Polygon ZKEVM Testnet", "1442" },
-            { "Goerli", "5" },
+            { "Polygon ZKEVM Cardona Testnet", "2442" },
+            { "SEPOLIA", "11155111" },
         };
     }
 
@@ -1129,7 +1129,7 @@ public class ContractManager : MonoBehaviour
             else
             {
                 // Polygon ZKEVM LxLy Bridge uses chainId 1 for Polygon ZKEVM and 0 for Ethereum
-                int destChainId = destChain == 5 ? 0 : 1;
+                int destChainId = destChain == 11155111 ? 0 : 1;
                 //if (destChain == 5)
                 //{
                 //    destChainId = 0;
