@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "NodeNext",
+    "outDir": "./deploy",
+    // "rootDir": "./src",
+    "strict": true,
+    "moduleResolution": "NodeNext",
+    "sourceMap": true,
+    "resolveJsonModule": true
+    // "esModuleInterop": true
+  },
+  "exclude": ["./node_modules"],
+  "include": ["./deploy/*"]
+}

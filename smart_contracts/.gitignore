@@ -13,3 +13,7 @@ docs/
 # Dotenv file
 .env
 node_modules
+
+artifacts-zk/
+cache_hardhat-zk/
+cache-zk/
