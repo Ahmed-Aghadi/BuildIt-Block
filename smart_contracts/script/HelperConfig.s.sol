@@ -8,7 +8,7 @@ contract HelperConfig is Script {
 
     uint256 public constant ANVIL_CHAIN_ID = 31337;
     // uint256 public constant GOERLI_CHAIN_ID = 5;
-    uint256 public constant POLYGON_ZKEVM_TESTNET_CHAIN_ID = 1442;
+    uint256 public constant POLYGON_ZKEVM_CARDONA_TESTNET_CHAIN_ID = 2442;
     uint256 public constant SEPOLIA_CHAIN_ID = 11155111;
     uint256 public constant AVALANCHE_FUJI_CHAIN_ID = 43113;
     uint256 public constant METIS_SEPOLIA_CHAIN_ID = 59902;
@@ -80,7 +80,7 @@ contract HelperConfig is Script {
             //     registrarAddress = 0x57A4a13b35d25EE78e084168aBaC5ad360252467;
             //     linkAddress = 0x326C977E6efc84E512bB9C30f76E30c160eD06FB;
             //     polygonZkevmBridgeAddress = 0xF6BEEeBB578e214CA9E23B0e9683454Ff88Ed2A7;
-        } else if (block.chainid == POLYGON_ZKEVM_TESTNET_CHAIN_ID) {
+        } else if (block.chainid == POLYGON_ZKEVM_CARDONA_TESTNET_CHAIN_ID) {
             // polygon zkevm testnet
             isPolygonZkvemBridgeRequired = true;
             eth_usd_priceFeedAddress = 0xd94522a6feF7779f672f4C88eb672da9222f2eAc;

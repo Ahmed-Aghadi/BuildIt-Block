@@ -19,7 +19,7 @@ contract Utils is ERC2771Context, ERC1155, Ownable, IBridgeMessageReceiver {
     IPolygonZkEVMBridge public immutable polygonZkEVMBridge;
 
     // Current network identifier
-    uint32 public immutable networkID;
+    // uint32 public immutable networkID;
 
     mapping(uint32 => address) public chains;
 
@@ -30,7 +30,7 @@ contract Utils is ERC2771Context, ERC1155, Ownable, IBridgeMessageReceiver {
     ) Ownable(msg.sender) ERC2771Context(trustedForwarder) ERC1155(_baseUri) {
         baseUri = _baseUri;
         polygonZkEVMBridge = _polygonZkEVMBridge;
-        networkID = polygonZkEVMBridge.networkID();
+        // networkID = polygonZkEVMBridge.networkID();
     }
 
     function setChain(uint32 chain, address addr) public onlyOwner {

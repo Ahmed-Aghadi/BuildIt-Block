@@ -11,7 +11,7 @@ optimizer_runs = 20_000
 [etherscan]
 sepolia = { key = "${ETHERSCAN_API_KEY}", chain = "11155111", url = "${SEPOLIA_API_URL}" }
 avalanche_fuji = { key = "${AVALANCHE_FUJI_TESTNET_API_KEY}", chain = "43113", url = "${AVALANCHE_FUJI_TESTNET_API_URL}" }
-polygon_zkevm_testnet = { key = "${POLYGONSCAN_ZKEVM_API_KEY}", chain = "1442", url = "${POLYGONZKEVM_TESTNET_API_URL}" }
+polygon_zkevm_cardona_testnet = { key = "${POLYGONSCAN_ZKEVM_API_KEY}", chain = "2442", url = "${POLYGONZKEVM_CARDONA_TESTNET_API_URL}" }
 polygon_amoy = { key = "${POLYGONSCAN_API_KEY}", chain = "80002", url = "${POLYGON_AMOY_API_URL}" }
 scroll_sepolia = { key = "${SCROLLSCAN_API_KEY}", chain = "534351", url = "${SCROLL_SEPOLIA_API_URL}" }
 metis_sepolia = { key = "${METIS_API_KEY}", chain = "59902", url = "${METIS_SEPOLIA_API_URL}" }
