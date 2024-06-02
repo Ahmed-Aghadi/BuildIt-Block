@@ -14,6 +14,7 @@ contract HelperConfig is Script {
     uint256 public constant METIS_SEPOLIA_CHAIN_ID = 59902;
     uint256 public constant SCROLL_SEPOLIA_CHAIN_ID = 534351;
     uint256 public constant ZKSYNC_SEPOLIA_CHAIN_ID = 300;
+    uint256 public constant POLYGON_AMOY_CHAIN_ID = 80002;
 
     struct NetworkConfig {
         uint256 deployerPrivateKey;
@@ -55,9 +56,18 @@ contract HelperConfig is Script {
         } else if (block.chainid == ZKSYNC_SEPOLIA_CHAIN_ID) {
             // ZkSync Sepolia
             eth_usd_priceFeedAddress = 0xfEefF7c3fB57d18C5C6Cdd71e45D2D0b4F9377bF;
+        } else if (block.chainid == POLYGON_AMOY_CHAIN_ID) {
+            // Polygon Amoy
+            routerAddress = 0x9C32fCB86BF0f4a1A8921a9Fe46de3198bb884B2;
+            registryAddress = 0x93C0e201f7B158F503a1265B6942088975f92ce7;
+            registrarAddress = 0x99083A4bb154B0a3EC7a0D1eb40370C892Db4225;
+            eth_usd_priceFeedAddress = 0xF0d50568e3A7e8259E16663972b11910F89BD8e7;
+            linkAddress = 0x0Fd9e8d3aF1aaee056EB9e802c3A762a667b1904;
         } else if (block.chainid == SEPOLIA_CHAIN_ID) {
             // Sepolia
-            routerAddress = 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59;
+            // routerAddress = 0x0BF3dE8c5D3e8A2B34D2BEeB17ABfCeBaf363A59;
+            isPolygonZkvemBridgeRequired = true;
+            polygonZkevmBridgeAddress = 0x528e26b25a34a4A5d0dbDa1d57D318153d2ED582;
             registryAddress = 0x86EFBD0b6736Bed994962f9797049422A3A8E8Ad; // 0xE16Df59B887e3Caa439E0b29B42bA2e7976FD8b2;
             registrarAddress = 0xb0E49c5D0d05cbc241d68c05BC5BA1d1B7B72976; // 0x9a811502d843E5a03913d5A2cfb646c11463467A;
             eth_usd_priceFeedAddress = 0x694AA1769357215DE4FAC081bf1f309aDC325306;
@@ -74,7 +84,7 @@ contract HelperConfig is Script {
             // polygon zkevm testnet
             isPolygonZkvemBridgeRequired = true;
             eth_usd_priceFeedAddress = 0xd94522a6feF7779f672f4C88eb672da9222f2eAc;
-            polygonZkevmBridgeAddress = 0xF6BEEeBB578e214CA9E23B0e9683454Ff88Ed2A7;
+            polygonZkevmBridgeAddress = 0x528e26b25a34a4A5d0dbDa1d57D318153d2ED582; // 0xF6BEEeBB578e214CA9E23B0e9683454Ff88Ed2A7
         } else if (block.chainid == ANVIL_CHAIN_ID) {
             // Anvil
             deployerPrivateKey = ANVIL_PRIVATE_KEY;
