@@ -1,0 +1,54 @@
+{
+  "300": {
+    "Forwarder": "0xca34ff4068f042203087d475805c4dd8347ce958",
+    "Utils": "0x11da0f57086a19977e46b548b64166411d839a30",
+    "Map": "0xdf78d5a57dcff31ca18978b56760867010aebc2e",
+    "Marketplace": "0x76cfde04f691b93c9993be24d5fe7667e7a8782c",
+    "Faucet": "0x489d47e592639ba11107e84dd6cca08f0892e27d"
+  },
+  "2442": {
+    "Forwarder": "0x11da0f57086a19977e46b548b64166411d839a30",
+    "Utils": "0xdf78d5a57dcff31ca18978b56760867010aebc2e",
+    "Map": "0x76cfde04f691b93c9993be24d5fe7667e7a8782c",
+    "Marketplace": "0x489d47e592639ba11107e84dd6cca08f0892e27d",
+    "Faucet": "0x06ce5b276a53e072dc3144d3746e57fd2ca6a1b4"
+  },
+  "43113": {
+    "Forwarder": "0x9819e6338170cd6b93b5f106d86364d3e8f9c5ef",
+    "Utils": "0x6acc64d9f601d7b4a237a4373ef17cca5760d904",
+    "Map": "0x7d1c388104e7640da5882427d753690f39b3d11f",
+    "Marketplace": "0xcc571a70c092d1224e4a9f8013b66009301864e5",
+    "Faucet": "0x9984570180fd379a7942fbca81258a658444df37",
+    "LinkToken": "0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846"
+  },
+  "59902": {
+    "Forwarder": "0x76cfdE04F691B93c9993Be24d5FE7667E7A8782C",
+    "Utils": "0x489d47E592639Ba11107E84dd6CCA08F0892E27d",
+    "Map": "0x06CE5B276a53e072dc3144D3746e57fD2CA6a1B4",
+    "Marketplace": "0xE2c149c4cb26F137e7eab87E7675bE71E53d7071",
+    "Faucet": "0x0247F66d1a3029FB43A02481c7a2E03CD158adA7"
+  },
+  "80002": {
+    "Forwarder": "0xca34ff4068f042203087d475805c4dd8347ce958",
+    "Utils": "0x11da0f57086a19977e46b548b64166411d839a30",
+    "Map": "0xdf78d5a57dcff31ca18978b56760867010aebc2e",
+    "Marketplace": "0x76cfde04f691b93c9993be24d5fe7667e7a8782c",
+    "Faucet": "0x489d47e592639ba11107e84dd6cca08f0892e27d",
+    "LinkToken": "0x0Fd9e8d3aF1aaee056EB9e802c3A762a667b1904"
+  },
+  "534351": {
+    "Forwarder": "0xca34ff4068f042203087d475805c4dd8347ce958",
+    "Utils": "0x11da0f57086a19977e46b548b64166411d839a30",
+    "Map": "0xdf78d5a57dcff31ca18978b56760867010aebc2e",
+    "Marketplace": "0x76cfde04f691b93c9993be24d5fe7667e7a8782c",
+    "Faucet": "0x489d47e592639ba11107e84dd6cca08f0892e27d"
+  },
+  "11155111": {
+    "Forwarder": "0x7e4a77cd71f7be781ba3f91be460109a0e25d186",
+    "Utils": "0x120f7784cba30ea1de4d2b18cf76b766c0678e41",
+    "Map": "0xadab443b989560dbde2da2f9f0954be2f4ecbe97",
+    "Marketplace": "0x6aaa761e685ce0e43ae45b138ab54729e4c99323",
+    "Faucet": "0x0bb6f10c62c3e1bdc30dc65cfa2a9aa2c6dae70e",
+    "LinkToken": "0x779877A7B0D9E8603169DdbD7836e478b4624789"
+  }
+}
