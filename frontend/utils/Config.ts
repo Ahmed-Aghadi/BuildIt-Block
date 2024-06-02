@@ -1,7 +1,7 @@
 import { getDefaultConfig } from "@rainbow-me/rainbowkit";
 import {
   avalancheFuji,
-  polygonZkEvmTestnet,
+  polygonZkEvmCardona,
   zkSyncSepoliaTestnet,
   scrollSepolia,
   sepolia,
@@ -30,7 +30,7 @@ const config = getDefaultConfig({
   projectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID || "",
   chains: [
     avalancheFuji,
-    polygonZkEvmTestnet,
+    polygonZkEvmCardona,
     zkSyncSepoliaTestnet,
     scrollSepolia,
     sepolia,
