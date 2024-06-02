@@ -109,6 +109,10 @@ export const ContractFunctions = ({
     string[]
   >([]);
 
+  const [chainId, setChainId] = useState<number>();
+
+  console.log("chainId vs account.chainId", chainId, account.chainId);
+
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
@@ -221,7 +225,7 @@ export const ContractFunctions = ({
     provider,
   ]);
 
-  const [chainId, setChainId] = useState<number>();
+  const [chainIdChanged, setChainIdChanged] = useState(false);
 
   useEffect(() => {
     if (account.isConnected) {
@@ -229,16 +233,26 @@ export const ContractFunctions = ({
       const ethersProvider = getEthersProvider(config);
       setProvider(ethersProvider);
       if (chainId && chainId != account.chainId) {
-        onSwitchNetworkCallback.forEach((functionName) => {
-          sendMessage("ContractManager", functionName);
-        });
+        setChainIdChanged(true);
+        // onSwitchNetworkCallback.forEach((functionName) => {
+        //   sendMessage("ContractManager", functionName);
+        // });
       }
       setChainId(account.chainId);
     } else {
       setChainId(undefined);
       setConnected(false);
     }
-  }, [account.status]);
+  }, [account.isConnected, account.chainId]);
+
+  useEffect(() => {
+    if (chainIdChanged) {
+      onSwitchNetworkCallback.forEach((functionName) => {
+        sendMessage("ContractManager", functionName);
+      });
+      setChainIdChanged(false);
+    }
+  }, [chainIdChanged]);
 
   useEffect(() => {
     if (connected) {
