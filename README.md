@@ -129,7 +129,7 @@ Also, users can transfer their util items from one chain to another ( using **Po
 
 User can toggle **Gasless** switch on top of the screen to experience gasless transactions using ERC2771 context but transaction won't be gasless if user is trying to buy something on marketplace as it would involves transferring of native tokens from user and ERC2771 context would expect relayer to transfer the native tokens. Whereas User can experience **complete gasless experience** for **Moonbase Alpha** using **Moonbeam's Call Permit Precompile**.
 
-Contracts are deployed on **Sepolia**, **Polygon ZKEVM Cardona Testnet**, **Avalanche Fuji Testnet**, **Polygon Amoy**, **Scroll Sepolia**, **Metis Sepolia**, **ZKSync Sepolia**, **moonbase alpha**.
+Contracts are deployed on **Sepolia**, **Polygon ZKEVM Cardona Testnet**, **Avalanche Fuji Testnet**, **Polygon Amoy**, **Scroll Sepolia**, **Metis Sepolia**, **ZKSync Sepolia**, **Moonbase Alpha**.
 
 ## How We Built It
 
