@@ -44,8 +44,8 @@ contract DeployAll is Script {
             address marketplace,
             address faucet
         ) = deployAllContracts();
-        // mintUtils(utils);
-        // fundFaucet(utils, faucet);
+        mintUtils(utils);
+        fundFaucet(utils, faucet);
         return (forwarder, map, utils, marketplace, faucet);
     }
 
@@ -54,15 +54,10 @@ contract DeployAll is Script {
         returns (address, address, address, address, address)
     {
         // deploy all contracts
-        // address forwarder = 0x76cfdE04F691B93c9993Be24d5FE7667E7A8782C;
         address forwarder = deployForwarder();
-        // address utils = 0x489d47E592639Ba11107E84dd6CCA08F0892E27d;
         address utils = deployUtils(forwarder);
-        // address map = 0x06CE5B276a53e072dc3144D3746e57fD2CA6a1B4;
         address map = deployMap(utils, forwarder);
-        // address marketplace = 0xE2c149c4cb26F137e7eab87E7675bE71E53d7071;
         address marketplace = deployMarketplace(map, utils, forwarder);
-        // address faucet = 0x0247F66d1a3029FB43A02481c7a2E03CD158adA7;
         address faucet = deployFaucet(forwarder);
 
         return (forwarder, map, utils, marketplace, faucet);
