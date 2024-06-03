@@ -34,6 +34,10 @@ elif [ $1 == "polygon_amoy" ] ; then
     chainId=80002
     rpcURL=$POLYGON_AMOY_RPC_URL
     etherscanKey="polygon_amoy"
+elif [ $1 == "moonbase_alpha" ] ; then
+    chainId=1287
+    rpcURL=$MOONBASE_ALPHA_RPC_URL
+    etherscanKey="moonbase_alpha"
 else
     echo "Invalid chain name. Please provide a valid chain name."
     exit 1

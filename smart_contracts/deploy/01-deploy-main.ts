@@ -11,9 +11,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // load wallet private key from env file
-const PRIVATE_KEY =
-  process.env.WALLET_PRIVATE_KEY ||
-  "0x0ecb5748eb667e7d67da8431e138022028188d1fa2edc4511509351121cfbb17";
+const PRIVATE_KEY = process.env.WALLET_PRIVATE_KEY || "";
 
 if (!PRIVATE_KEY)
   throw "⛔️ Private key not detected! Add it to the .env file!";

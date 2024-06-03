@@ -44,8 +44,7 @@ const hardhat_zksync_deploy_1 = require("@matterlabs/hardhat-zksync-deploy");
 const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 // load wallet private key from env file
-const PRIVATE_KEY = process.env.WALLET_PRIVATE_KEY ||
-    "0x0ecb5748eb667e7d67da8431e138022028188d1fa2edc4511509351121cfbb17";
+const PRIVATE_KEY = process.env.WALLET_PRIVATE_KEY || "";
 if (!PRIVATE_KEY)
     throw "⛔️ Private key not detected! Add it to the .env file!";
 function deployContract(deployer, artifactName, args) {
@@ -113,11 +112,6 @@ module.exports = (hre) => __awaiter(void 0, void 0, void 0, function* () {
     //   );
     // }
     eth_usd_priceFeedAddress = "0xfEefF7c3fB57d18C5C6Cdd71e45D2D0b4F9377bF";
-    const forwarderAddress = "0xD2BC5F83A84bE02ec534ba961f991675a2841C3f";
-    const utilsAddress = "0xf80ed627bc1F0162c046677AA8127678bba86a4c";
-    const mapAddress = "0x60385361E2826f58BBA3BA1f75bb29eA04167F44";
-    const faucetAddress = "0x09d5a454f0E6260A2fe486884C8090dE2930087A";
-    const marketplaceAddress = "0xd63297BB2C64E9a5F8D17A9b851315Ac60A7a488";
     log("----------------------------------------------------");
     const forwarderArg = [];
     // const forwarder = await deploy("Forwarder", {
@@ -126,16 +120,15 @@ module.exports = (hre) => __awaiter(void 0, void 0, void 0, function* () {
     //   log: true,
     //   waitConfirmations: waitBlockConfirmations,
     // });
-    // const forwarder = await deployContract(deployer, "Forwarder", forwarderArg);
-    // // const forwarder = {
-    // //   address: "0x65D84C0883e0e0c9c41B044b4523cd07999924Fe",
-    // // };
-    // console.log("forwarder deployed to:", await forwarder.getAddress());
+    const forwarder = yield deployContract(deployer, "Forwarder", forwarderArg);
+    // const forwarder = {
+    //   address: "0x65D84C0883e0e0c9c41B044b4523cd07999924Fe",
+    // };
+    console.log("forwarder deployed to:", yield forwarder.getAddress());
     log("----------------------------------------------------");
     const utilsArg = [
         utilsBaseUri,
-        // await forwarder.getAddress(),
-        forwarderAddress,
+        yield forwarder.getAddress(),
         linkAddress,
         routerAddress,
     ];
@@ -149,24 +142,18 @@ module.exports = (hre) => __awaiter(void 0, void 0, void 0, function* () {
     //     waitConfirmations: waitBlockConfirmations,
     //   }
     // );
-    // const utils = await deployContract(
-    //   deployer,
-    //   "src/UtilsCCIP.sol:Utils",
-    //   utilsArg
-    // );
-    // // const utils = {
-    // //   address: "0x4a4e6cc94507b6ad2c91ad765d3f5b566b15d895",
-    // // };
-    // console.log("utils deployed to:", await utils.getAddress());
+    const utils = yield deployContract(deployer, "src/UtilsCCIP.sol:Utils", utilsArg);
+    // const utils = {
+    //   address: "0x4a4e6cc94507b6ad2c91ad765d3f5b566b15d895",
+    // };
+    console.log("utils deployed to:", yield utils.getAddress());
     log("----------------------------------------------------");
     const mapArg = [
         size,
         perSize,
         mapBaseUri,
-        // await utils.getAddress(),
-        utilsAddress,
-        // await forwarder.getAddress(),
-        forwarderAddress,
+        yield utils.getAddress(),
+        yield forwarder.getAddress(),
     ];
     // const map = await deploy("Map", {
     //   from: deployer,
@@ -174,39 +161,33 @@ module.exports = (hre) => __awaiter(void 0, void 0, void 0, function* () {
     //   log: true,
     //   waitConfirmations: waitBlockConfirmations,
     // });
-    // const map = await deployContract(deployer, "Map", mapArg);
-    // // const map = {
-    // //   address: "0x91db12f3ea6f4598c982d46e8fdc72b53c333afb",
-    // // };
-    // console.log("map deployed to:", await map.getAddress());
+    const map = yield deployContract(deployer, "Map", mapArg);
+    // const map = {
+    //   address: "0x91db12f3ea6f4598c982d46e8fdc72b53c333afb",
+    // };
+    console.log("map deployed to:", yield map.getAddress());
     log("----------------------------------------------------");
-    const faucetArg = [
-        // await forwarder.getAddress()
-        forwarderAddress,
-    ];
+    const faucetArg = [yield forwarder.getAddress()];
     // const faucet = await deploy("Faucet", {
     //   from: deployer,
     //   args: faucetArg,
     //   log: true,
     //   waitConfirmations: waitBlockConfirmations,
     // });
-    // const faucet = await deployContract(deployer, "Faucet", faucetArg);
-    // // const faucet = {
-    // //   address: "0x724257edfe7f3bbf8c06a01ae3becb48dc5e220a",
-    // // };
-    // console.log("faucet deployed to:", await faucet.getAddress());
+    const faucet = yield deployContract(deployer, "Faucet", faucetArg);
+    // const faucet = {
+    //   address: "0x724257edfe7f3bbf8c06a01ae3becb48dc5e220a",
+    // };
+    console.log("faucet deployed to:", yield faucet.getAddress());
     log("----------------------------------------------------");
     const marketplaceArg = [
         eth_usd_priceFeedAddress,
-        // await map.getAddress(),
-        mapAddress,
-        // await utils.getAddress(),
-        utilsAddress,
+        yield map.getAddress(),
+        yield utils.getAddress(),
         linkAddress,
         registrarAddress,
         gasLimit,
-        // await forwarder.getAddress(),
-        forwarderAddress,
+        yield forwarder.getAddress(),
     ];
     // const marketplace = await deploy("Marketplace", {
     //   from: deployer,
@@ -214,53 +195,29 @@ module.exports = (hre) => __awaiter(void 0, void 0, void 0, function* () {
     //   log: true,
     //   waitConfirmations: waitBlockConfirmations,
     // });
-    // const marketplace = await deployContract(
-    //   deployer,
-    //   "Marketplace",
-    //   marketplaceArg
-    // );
-    // // const marketplace = {
-    // //   address: "0x20294525826458177030954af848d783f733a80a",
-    // // };
-    // console.log("marketplace deployed to:", await marketplace.getAddress());
+    const marketplace = yield deployContract(deployer, "Marketplace", marketplaceArg);
+    // const marketplace = {
+    //   address: "0x20294525826458177030954af848d783f733a80a",
+    // };
+    console.log("marketplace deployed to:", yield marketplace.getAddress());
     log("----------------------------------------------------");
-    // console.log("Minting Utils...");
-    // await mintUtils(
-    //   utils,
-    //   deployer,
-    //   await utils.getAddress(),
-    //   utilsMintCount,
-    //   utilsMintAmount,
-    //   "src/UtilsCCIP.sol:Utils"
-    // );
-    // log("----------------------------------------------------");
-    // console.log("Transfering Utils to Faucet...");
-    // await transferToFaucet(
-    //   utils,
-    //   deployer,
-    //   await utils.getAddress(),
-    //   await faucet.getAddress(),
-    //   utilsMintCount,
-    //   transferUtilsAmount,
-    //   "src/UtilsCCIP.sol:Utils"
-    // );
-    // log("----------------------------------------------------");
+    console.log("Minting Utils...");
+    yield mintUtils(utils, deployer, yield utils.getAddress(), utilsMintCount, utilsMintAmount, "src/UtilsCCIP.sol:Utils");
+    log("----------------------------------------------------");
+    console.log("Transfering Utils to Faucet...");
+    yield transferToFaucet(utils, deployer, yield utils.getAddress(), yield faucet.getAddress(), utilsMintCount, transferUtilsAmount, "src/UtilsCCIP.sol:Utils");
+    log("----------------------------------------------------");
     try {
         console.log("Verifying for Forwarder...");
-        // await verify(await forwarder.getAddress(), forwarderArg, hre);
-        yield verify(forwarderAddress, forwarderArg, hre);
+        yield verify(yield forwarder.getAddress(), forwarderArg, hre);
         console.log("Verifying for Utils...");
-        // await verify(await utils.getAddress(), utilsArg, hre);
-        yield verify(utilsAddress, utilsArg, hre);
+        yield verify(yield utils.getAddress(), utilsArg, hre);
         console.log("Verifying for Map...");
-        // await verify(await map.getAddress(), mapArg, hre);
-        yield verify(mapAddress, mapArg, hre);
+        yield verify(yield map.getAddress(), mapArg, hre);
         console.log("Verifying for Faucet...");
-        // await verify(await faucet.getAddress(), faucetArg, hre);
-        yield verify(faucetAddress, faucetArg, hre);
+        yield verify(yield faucet.getAddress(), faucetArg, hre);
         console.log("Verifying for Marketplace...");
-        // await verify(await marketplace.getAddress(), marketplaceArg, hre);
-        yield verify(marketplaceAddress, marketplaceArg, hre);
+        yield verify(yield marketplace.getAddress(), marketplaceArg, hre);
     }
     catch (error) {
         console.log(error);

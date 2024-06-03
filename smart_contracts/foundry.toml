@@ -16,3 +16,4 @@ polygon_amoy = { key = "${POLYGONSCAN_API_KEY}", chain = "80002", url = "${POLYG
 scroll_sepolia = { key = "${SCROLLSCAN_API_KEY}", chain = "534351", url = "${SCROLL_SEPOLIA_API_URL}" }
 metis_sepolia = { key = "${METIS_API_KEY}", chain = "59902", url = "${METIS_SEPOLIA_API_URL}" }
 zksync_sepolia = { key = "${ZKSYNC_API_KEY}", chain = "300", url = "${ZKSYNC_SEPOLIA_API_URL}" }
+moonbase_alpha = { key = "${MOONBEAM_MOONSCAN_API_KEY}", chain = "1287", url = "${MOONBASE_ALPHA_API_URL}" }

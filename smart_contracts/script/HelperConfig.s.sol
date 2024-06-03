@@ -15,6 +15,7 @@ contract HelperConfig is Script {
     uint256 public constant SCROLL_SEPOLIA_CHAIN_ID = 534351;
     uint256 public constant ZKSYNC_SEPOLIA_CHAIN_ID = 300;
     uint256 public constant POLYGON_AMOY_CHAIN_ID = 80002;
+    uint256 public constant MOONBASE_ALPHA_CHAIN_ID = 1287;
 
     struct NetworkConfig {
         uint256 deployerPrivateKey;
@@ -50,6 +51,8 @@ contract HelperConfig is Script {
             linkAddress = 0x0b9d5D9136855f6FEc3c0993feE6E9CE8a297846;
         } else if (block.chainid == METIS_SEPOLIA_CHAIN_ID) {
             // Metis Sepolia
+        } else if (block.chainid == MOONBASE_ALPHA_CHAIN_ID) {
+            // Moonbase Alpha
         } else if (block.chainid == SCROLL_SEPOLIA_CHAIN_ID) {
             // Scroll Sepolia
             eth_usd_priceFeedAddress = 0x59F1ec1f10bD7eD9B938431086bC1D9e233ECf41;
