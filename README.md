@@ -39,6 +39,8 @@ Note: Don't forget to create .env file ( refer .env.example file ).
 
 ### Smart Contracts
 
+NOTE: Smart contracts were compiled using Solc 0.8.25 ( i.e v0.8.25+commit.b61c2a91).
+
 Go to `smart_contracts` folder and install foundry and hardhat.
 
 ```bash
@@ -64,7 +66,7 @@ To deploy smart contracts:
 ```bash
 source .env
 
-# For sepolia, polygon_zkevm_cardona_testnet, avalanche_fuji, metis_sepolia, scroll_sepolia and polygon_amoy
+# For sepolia, polygon_zkevm_cardona_testnet, avalanche_fuji, metis_sepolia, scroll_sepolia, polygon_amoy and moonbase_alpha
 script/deploy.bash sepolia
 
 # For zksync sepolia
@@ -126,7 +128,7 @@ User can also connect through social logins and dApp-embedded wallets using Part
 
 Also, users can transfer their util items from one chain to another ( using Polygon LxLy bridge and CCIP ). Polygon LxLy bridge is used to transfer utils items from Polygon ZKEVM Cardona Testnet to Sepolia and vice versa whereas Chainlink CCIP is used to transfer utils items between Avalanche Fuji Testet, Polygon Amoy.
 
-Contracts are deployed on Sepolia, Polygon ZKEVM Cardona Testnet, Avalanche Fuji Testnet, Polygon Amoy, Scroll Sepolia, Metis Sepolia, ZKSync Sepolia.
+Contracts are deployed on Sepolia, Polygon ZKEVM Cardona Testnet, Avalanche Fuji Testnet, Polygon Amoy, Scroll Sepolia, Metis Sepolia, ZKSync Sepolia, moonbase alpha.
 
 ## How We Built It
 
