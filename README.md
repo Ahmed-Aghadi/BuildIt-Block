@@ -91,7 +91,7 @@ node script/GenerateContractAddress.js
 
 ## Smart Contracts
 
-- Check [contract-address.json](frontend/utils//contract-address.json) for contract addresses for different networks.
+- Check [contract-address.json](https://github.com/Ahmed-Aghadi/BuildIt-Block/blob/main/frontend/utils/contract-address.json) for contract addresses for different networks.
 
 ## Table of Contents
 
@@ -102,6 +102,7 @@ node script/GenerateContractAddress.js
 - [Accomplishments That We're Proud Of](#accomplishments-that-were-proud-of)
 - [What We Learned](#what-we-learned)
 - [What's Next for BuildIt](#whats-next-for-buildit)
+- [Code Usage References](#code-usage-references)
 
 ## Inspiration
 
@@ -118,17 +119,17 @@ BuildIt allows users to:
 
 When a user connects their wallet, the game fetches data from the smart contracts and highlights the portion of the map that the user owns. Users can then click the "Edit" button to place or remove items on their land. They have the option to cancel or confirm the changes, which updates the items in the appropriate locations. Smart contract checks ensure that users can only interact with the land they own.
 
-In addition, BuildIt includes a marketplace where users can sell their land through direct listings or auctions. Chainlink automation can be utilized for auction listings, and if the chain supports Chainlink price feeds, the land can be sold in USD. The marketplace provides an easy and secure way for users to trade their land.
+In addition, BuildIt includes a marketplace where users can sell their land through direct listings or auctions. **Chainlink automation** is utilized for auction listings and using **Chainlink price feeds**, the land can be sold in USD. The marketplace provides an easy and secure way for users to trade their land.
 
 While editing the map, user can also save/load private designs which is saved using sprucekit.
 
 In marketplace listing, if seller owns an ENS account then it will display it so that it add more credibility about seller.
 
-User can also connect through social logins and dApp-embedded wallets using Particle Network
+Also, users can transfer their util items from one chain to another ( using **Polygon LxLy bridge** and **CCIP** ). **Polygon LxLy bridge** is used to transfer utils items from **Polygon ZKEVM Cardona Testnet** to **Sepolia** and vice versa whereas **Chainlink CCIP** is used to transfer utils items between **Avalanche Fuji Testet**, **Polygon Amoy**.
 
-Also, users can transfer their util items from one chain to another ( using Polygon LxLy bridge and CCIP ). Polygon LxLy bridge is used to transfer utils items from Polygon ZKEVM Cardona Testnet to Sepolia and vice versa whereas Chainlink CCIP is used to transfer utils items between Avalanche Fuji Testet, Polygon Amoy.
+Although all contracts in all chain implements ERC2771 context thus user can experience gasless transactions, User will also experience gasless transactions for moonbase alpha using **Moonbeam's Call Permit Precompile**.
 
-Contracts are deployed on Sepolia, Polygon ZKEVM Cardona Testnet, Avalanche Fuji Testnet, Polygon Amoy, Scroll Sepolia, Metis Sepolia, ZKSync Sepolia, moonbase alpha.
+Contracts are deployed on **Sepolia**, **Polygon ZKEVM Cardona Testnet**, **Avalanche Fuji Testnet**, **Polygon Amoy**, **Scroll Sepolia**, **Metis Sepolia**, **ZKSync Sepolia**, **moonbase alpha**.
 
 ## How We Built It
 
@@ -194,3 +195,11 @@ BuildIt is an ongoing project, and we have exciting plans for its future:
 - Leveraging cross chain marketplace using Chainlink CCIP.
 
 We are dedicated to continuously improving and expanding BuildIt to create a vibrant and immersive metaverse experience for all users.
+
+## Code Usage References
+
+- Chainlink Automation: [Chainlink Automation](https://github.com/Ahmed-Aghadi/BuildIt-Block/blob/main/smart_contracts/src/Marketplace.sol#L195-L197)
+- Chainlink Price Feeds: [Chainlink Price Feeds](https://github.com/Ahmed-Aghadi/BuildIt-Block/blob/main/smart_contracts/src/Marketplace.sol#L334-L345)
+- Chainlink CCIP: [Chainlink CCIP](https://github.com/Ahmed-Aghadi/BuildIt-Block/blob/main/smart_contracts/src/UtilsCCIP.sol#L113-L116)
+- Polygon LxLy Bridge: [Polygon LxLy Bridge](https://github.com/Ahmed-Aghadi/BuildIt-Block/blob/main/smart_contracts/src/UtilsLxLy.sol#L56-L60)
+- Moonbeam's Call Permit Precompile: [Moonbeam's Call Permit Precompile](https://github.com/Ahmed-Aghadi/BuildIt-Block/blob/main/frontend/components/ContractFunctions.tsx#L317-L347)
