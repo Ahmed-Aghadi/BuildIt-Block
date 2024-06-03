@@ -135,21 +135,21 @@ Contracts are deployed on **Sepolia**, **Polygon ZKEVM Cardona Testnet**, **Aval
 
 BuildIt was built using the following technologies and tools:
 
-- Unity: The game was developed using Unity and built for Webgl.
-- Smart Contracts: Five smart contracts were developed using Foundry and Hardhat:
-  - Map Contract: Responsible for the Lands in the Map, implemented as an ERC721 contract.
-  - Utils Contract: Represents the items that can be placed on the land, implemented as an ERC1155 contract.
-  - Faucet Contract: Allows users to obtain items for free initially. It is funded to provide items for judges and other participants.
-  - Marketplace Contract: Facilitates land sales through direct listings and auctions.
-  - Forwarder Contract: As all contracts implements ERC2771 context, Forwarder is used to provide gasless transactions for users.
-- Map Size: The map size is determined in the smart contract, allowing the deployment of multiple maps with different sizes. The current deployment consists of a map with a size of 15 by 15 tiles, where each land is a 5 by 5 tile.
-- Item Minting: Three items are minted in the Utils contract: road, house, and special item.
-- Wallet Integration: Users can connect their wallets, such as Metamask, Coinbase, and WalletConnect, to interact with the metaverse.
-- Gasless Transactions: All smart contracts implement ERC2771Context, enabling users to perform gasless transactions when the relayer is funded.
-- Sprucekit was used to let User Save/Load private designs
-- ENS was used to resolve custom name for users in marketplace
-- Polygon LxLy bridge is used to transfer utils items from Polygon ZKEVM Cardona Testnet to Sepolia and vice versa.
-- Chainlink CCIP is used to transfer utils items between Avalanche Fuji Testet and Polygon Amoy.
+- **Unity**: The game was developed using **Unity** and built for **Webgl**.
+- **Smart Contracts**: Five smart contracts were developed using **Foundry** and **Hardhat**:
+  - **Map Contract**: Responsible for the Lands in the Map, implemented as an **ERC721 contract**.
+  - **Utils Contract**: Represents the items that can be placed on the land, implemented as an **ERC1155 contract**.
+  - **Faucet Contract**: Allows users to obtain items for free initially. It is funded to provide items for judges and other participants.
+  - **Marketplace Contract**: Facilitates land sales through **direct** listings and **auctions**.
+  - **Forwarder Contract**: As all contracts implements **ERC2771 context**, **Forwarder** is used to provide **gasless transactions** for users.
+- **Map Size**: The map size is determined in the smart contract, allowing the deployment of multiple maps with different sizes. The current deployment consists of a map with a size of 15 by 15 tiles, where each land is a 5 by 5 tile.
+- **Item Minting**: Three items are minted in the Utils contract: road, house, and special item.
+- **Wallet Integration**: Users can connect their wallets, such as **Metamask**, **Coinbase**, and **WalletConnect**, to interact with the metaverse.
+- **Gasless Transactions**: All smart contracts implement **ERC2771Context**, enabling users to perform **gasless transactions** when the relayer is funded.
+- **Sprucekit** was used to let User Save/Load private designs
+- **ENS** was used to resolve custom name for users in marketplace
+- **Polygon LxLy bridge** is used to transfer utils items from **Polygon ZKEVM Cardona Testnet** to **Sepolia** and vice versa.
+- **Chainlink CCIP** is used to transfer utils items between **Avalanche Fuji Testet** and **Polygon Amoy**.
 
 ## Challenges We Ran Into
 
@@ -161,6 +161,7 @@ During the development of BuildIt, we encountered several challenges, including:
 - Developing a user-friendly interface and seamless wallet integration for a smooth user experience.
 - Sprucekit sdk was mainly for Reactjs project, so to pass message between game build for wasm to Reactjs was challenging.
 - Unity output the build game in WebGL, so the communication between Webgl and Reactjs was challenging.
+- Implementing gasless transactions using ERC2771Context ( and Moonbeam's Call Permit Precompile for Moonbase Alpha ) and ensuring that users can interact with the metaverse without incurring gas fees.
 - Deployment of ZKSync Sepolia was challenging as it was first time we were deploying on ZKSync.
 
 ## Accomplishments That We're Proud Of
