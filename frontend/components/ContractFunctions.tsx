@@ -113,10 +113,129 @@ export const ContractFunctions = ({
 
   console.log("chainId vs account.chainId", chainId, account.chainId);
 
+  const MOONBASE_ALPHA_CHAIN_ID = 1287;
+
+  const MOONBASE_ALPHA_CALL_PERMIT_ADDRESS =
+    "0x000000000000000000000000000000000000080a";
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
+
+    const generateMsgData = (
+      message: {
+        from: string;
+        to: string;
+        value: number;
+        data: string;
+        gaslimit: number;
+        nonce: number;
+        deadline: number;
+      },
+      verifyingContract: string
+    ) => {
+      const domain = {
+        name: "Call Permit Precompile",
+        version: "1",
+        chainId: MOONBASE_ALPHA_CHAIN_ID,
+        verifyingContract: verifyingContract,
+      };
+      const types = {
+        // EIP712Domain: [
+        //   {
+        //     name: "name",
+        //     type: "string",
+        //   },
+        //   {
+        //     name: "version",
+        //     type: "string",
+        //   },
+        //   {
+        //     name: "chainId",
+        //     type: "uint256",
+        //   },
+        //   {
+        //     name: "verifyingContract",
+        //     type: "address",
+        //   },
+        // ],
+        CallPermit: [
+          {
+            name: "from",
+            type: "address",
+          },
+          {
+            name: "to",
+            type: "address",
+          },
+          {
+            name: "value",
+            type: "uint256",
+          },
+          {
+            name: "data",
+            type: "bytes",
+          },
+          {
+            name: "gaslimit",
+            type: "uint64",
+          },
+          {
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            name: "deadline",
+            type: "uint256",
+          },
+        ],
+      };
+      const values = message;
+      return { domain, types, values };
+    };
+
+    const getNonce = async (address: string) => {
+      // function nonces(address owner) external view returns (uint256)
+      let ABI = [
+        "function nonces(address owner) external view returns (uint256)",
+      ];
+      let iface = new ethers.utils.Interface(ABI);
+      let contract = new ethers.Contract(
+        MOONBASE_ALPHA_CALL_PERMIT_ADDRESS,
+        iface,
+        provider
+      );
+      let nonce = await contract.nonces(address);
+      return nonce;
+    };
+
+    const generateSignature = async (
+      from: string,
+      to: string,
+      value: number,
+      data: string,
+      gaslimit: number,
+      nonce: number,
+      deadline: number,
+      signer: ethers.providers.JsonRpcSigner | ethers.Wallet
+      // rpcUrl: string
+    ): Promise<string> => {
+      const message = {
+        from: from,
+        to: to,
+        value: value,
+        data: data,
+        gaslimit: gaslimit,
+        nonce: nonce,
+        deadline: deadline,
+      };
+      const { domain, types, values } = generateMsgData(
+        message,
+        MOONBASE_ALPHA_CALL_PERMIT_ADDRESS
+      );
+      const signature = await signer._signTypedData(domain, types, values);
+      return signature;
+    };
 
     async function invoke(route: string, payload: string) {
       console.log("invoke", route, payload);
@@ -194,15 +313,83 @@ export const ContractFunctions = ({
           value = functionArgs[0].value;
           functionArgs.shift();
         }
-        let tx;
-        if (isValue) {
+        let receipt;
+        if (chainId === 1287) {
           // @ts-ignore
-          tx = await contract[functionName](...functionArgs, { value: value });
+          let signFunctionData = contract.interface.encodeFunctionData(
+            functionName,
+            functionArgs
+          );
+          const txData = {
+            from: account.address!,
+            to: contract.address,
+            value: value,
+            data: signFunctionData,
+            gaslimit: parseInt(process.env.NEXT_PUBLIC_GAS_LIMIT ?? "100000"),
+            // nonce: (await provider?.getTransactionCount(account.address!))!,
+            nonce: parseInt(
+              ((await getNonce(account.address!)) as BigNumber).toString()
+            ),
+            deadline: Date.now() + 60 * 5 * 1000, // 5 minutes
+          };
+          console.log("txData", txData);
+          const signature = await generateSignature(
+            txData.from,
+            txData.to,
+            txData.value,
+            txData.data,
+            txData.gaslimit,
+            txData.nonce,
+            txData.deadline,
+            await getSigner()
+          );
+          const ethersSignature = ethers.utils.splitSignature(signature);
+          const ABI = [
+            "function dispatch(address from, address to, uint256 value, bytes data, uint64 gaslimit, uint256 deadline, uint8 v, bytes32 r, bytes32 s)",
+          ];
+          let iface = new ethers.utils.Interface(ABI);
+          const encodedFunctionData = iface.encodeFunctionData("dispatch", [
+            txData.from,
+            txData.to,
+            txData.value,
+            txData.data,
+            txData.gaslimit,
+            txData.deadline,
+            ethersSignature.v,
+            ethersSignature.r,
+            ethersSignature.s,
+          ]);
+          const res = await fetch(`/api/ExecuteAny`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              rpcURL: process.env.NEXT_PUBLIC_MOONBASE_ALPHA_RPC_URL as string,
+              transactionData: encodedFunctionData,
+              to: MOONBASE_ALPHA_CALL_PERMIT_ADDRESS,
+            }),
+          });
+
+          const { txReceipt, txResponse } = (await res.json()) as {
+            txResponse: ethers.providers.TransactionResponse;
+            txReceipt: ethers.providers.TransactionReceipt;
+          };
+          // return { success: true, txReceipt };
+          receipt = txReceipt;
         } else {
-          // @ts-ignore
-          tx = await contract[functionName](...functionArgs);
+          let tx;
+          if (isValue) {
+            // @ts-ignore
+            tx = await contract[functionName](...functionArgs, {
+              value: value,
+            });
+          } else {
+            // @ts-ignore
+            tx = await contract[functionName](...functionArgs);
+          }
+          receipt = await tx.wait();
         }
-        const receipt = await tx.wait();
         console.log("result", receipt);
         const r = { result: receipt };
         console.log("r", { r });

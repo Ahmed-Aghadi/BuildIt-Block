@@ -6,6 +6,13 @@
     "Marketplace": "0xd63297BB2C64E9a5F8D17A9b851315Ac60A7a488",
     "Faucet": "0x09d5a454f0E6260A2fe486884C8090dE2930087A"
   },
+  "1287": {
+    "Forwarder": "0xca34ff4068f042203087d475805c4dd8347ce958",
+    "Utils": "0x11da0f57086a19977e46b548b64166411d839a30",
+    "Map": "0xdf78d5a57dcff31ca18978b56760867010aebc2e",
+    "Marketplace": "0x76cfde04f691b93c9993be24d5fe7667e7a8782c",
+    "Faucet": "0x489d47e592639ba11107e84dd6cca08f0892e27d"
+  },
   "2442": {
     "Forwarder": "0x11da0f57086a19977e46b548b64166411d839a30",
     "Utils": "0xdf78d5a57dcff31ca18978b56760867010aebc2e",
