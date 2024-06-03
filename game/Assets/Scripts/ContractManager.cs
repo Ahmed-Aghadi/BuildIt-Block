@@ -41,6 +41,8 @@ public class ContractManager : MonoBehaviour
 {
     [DllImport("__Internal")]
     private static extern void SignIn();
+    [DllImport("__Internal")]
+    private static extern void SetIsGasless(bool isGasless);
     public const int EMPTY = 0;
     public const int ROAD = 1;
     public const int HOUSE = 2;
@@ -1177,6 +1179,11 @@ public class ContractManager : MonoBehaviour
     public void ResetListingHighlights()
     {
         mapManager.destroyListingHighlights();
+    }
+
+    public void OnGaslessValueChanged(bool isGasless)
+    {
+        SetIsGasless(isGasless);
     }
 
     public async void OnWalletConnect()

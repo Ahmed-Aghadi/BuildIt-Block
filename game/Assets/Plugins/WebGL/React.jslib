@@ -11,6 +11,9 @@ mergeInto(LibraryManager.library, {
   GetENS: function (address) {
     window.dispatchReactUnityEvent("GetENS", UTF8ToString(address));
   },
+  SetIsGasless: function (isGasless) {
+    window.dispatchReactUnityEvent("SetIsGasless", isGasless);
+  },
   ExecuteAny: function (taskId, route, payload, cb) {
     // convert taskId from pointer to str and allocate it to keep in memory
     var id = UTF8ToString(taskId);

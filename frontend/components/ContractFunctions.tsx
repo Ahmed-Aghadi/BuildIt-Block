@@ -4,6 +4,7 @@ import {
   Marketplace__factory,
   Faucet__factory,
   LinkTokenInterface__factory,
+  Forwarder__factory,
 } from "@/types";
 
 import { Utils__factory as UtilsCCIP__factory } from "@/types/factories/UtilsCCIP.sol";
@@ -22,6 +23,7 @@ import { type Config, getClient, getConnectorClient } from "@wagmi/core";
 import type { Account, Client, Chain, Transport } from "viem";
 
 import { config } from "@/utils/Config";
+import { ERC2771Forwarder } from "@/types/Forwarder";
 
 export function isLxLyChain(chainId: SupportedChainIds) {
   return chainId == "2442" || chainId == "11155111";
@@ -94,9 +96,7 @@ export const ContractFunctions = ({
 
   // const { account, particleProvider } = useAccountInfo();
   const [connected, setConnected] = useState(false);
-  const [provider, setProvider] = useState<
-    ethers.providers.FallbackProvider | ethers.providers.JsonRpcProvider
-  >();
+  const [provider, setProvider] = useState<ethers.providers.JsonRpcProvider>(); // ethers.providers.FallbackProvider | ethers.providers.JsonRpcProvider
   // const connectKit = useConnectKit();
 
   const [onWalletConnectCallback, setOnWalletConnectCallback] = useState<
@@ -109,20 +109,88 @@ export const ContractFunctions = ({
     string[]
   >([]);
 
-  const [chainId, setChainId] = useState<number>();
+  const [chainId, setChainId] = useState<SupportedChainIds>();
 
   console.log("chainId vs account.chainId", chainId, account.chainId);
 
-  const MOONBASE_ALPHA_CHAIN_ID = 1287;
+  const MOONBASE_ALPHA_CHAIN_ID = "1287";
 
   const MOONBASE_ALPHA_CALL_PERMIT_ADDRESS =
     "0x000000000000000000000000000000000000080a";
+  const [isGasless, setIsGasless] = useState(0);
+
+  function getIsGasless() {
+    return isGasless === 1;
+  }
+
+  useEffect(() => {
+    addEventListener("SetIsGasless", setIsGasless);
+    return () => {
+      removeEventListener("SetIsGasless", setIsGasless);
+    };
+  }, [addEventListener, removeEventListener, setIsGasless]);
+
   useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
 
-    const generateMsgData = (
+    const generateMsgDataForwarder = (
+      message: {
+        from: string;
+        to: string;
+        value: number;
+        gas: number;
+        nonce: number;
+        deadline: number;
+        data: string;
+      },
+      chainId: string,
+      verifyingContract: string
+    ) => {
+      const domain = {
+        name: "Forwarder",
+        version: "1",
+        chainId: chainId,
+        verifyingContract: verifyingContract,
+      };
+      const types = {
+        ForwardRequest: [
+          {
+            name: "from",
+            type: "address",
+          },
+          {
+            name: "to",
+            type: "address",
+          },
+          {
+            name: "value",
+            type: "uint256",
+          },
+          {
+            name: "gas",
+            type: "uint256",
+          },
+          {
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            name: "deadline",
+            type: "uint48",
+          },
+          {
+            name: "data",
+            type: "bytes",
+          },
+        ],
+      };
+      const values = message;
+      return { domain, types, values };
+    };
+
+    const generateMsgDataCallPermit = (
       message: {
         from: string;
         to: string;
@@ -141,24 +209,6 @@ export const ContractFunctions = ({
         verifyingContract: verifyingContract,
       };
       const types = {
-        // EIP712Domain: [
-        //   {
-        //     name: "name",
-        //     type: "string",
-        //   },
-        //   {
-        //     name: "version",
-        //     type: "string",
-        //   },
-        //   {
-        //     name: "chainId",
-        //     type: "uint256",
-        //   },
-        //   {
-        //     name: "verifyingContract",
-        //     type: "address",
-        //   },
-        // ],
         CallPermit: [
           {
             name: "from",
@@ -210,29 +260,17 @@ export const ContractFunctions = ({
     };
 
     const generateSignature = async (
-      from: string,
-      to: string,
-      value: number,
-      data: string,
-      gaslimit: number,
-      nonce: number,
-      deadline: number,
+      domain: {
+        name: string;
+        version: string;
+        chainId: string;
+        verifyingContract: string;
+      },
+      types: any,
+      values: any,
       signer: ethers.providers.JsonRpcSigner | ethers.Wallet
       // rpcUrl: string
     ): Promise<string> => {
-      const message = {
-        from: from,
-        to: to,
-        value: value,
-        data: data,
-        gaslimit: gaslimit,
-        nonce: nonce,
-        deadline: deadline,
-      };
-      const { domain, types, values } = generateMsgData(
-        message,
-        MOONBASE_ALPHA_CALL_PERMIT_ADDRESS
-      );
       const signature = await signer._signTypedData(domain, types, values);
       return signature;
     };
@@ -314,7 +352,7 @@ export const ContractFunctions = ({
           functionArgs.shift();
         }
         let receipt;
-        if (chainId === 1287) {
+        if (chainId === "1287") {
           // @ts-ignore
           let signFunctionData = contract.interface.encodeFunctionData(
             functionName,
@@ -333,14 +371,24 @@ export const ContractFunctions = ({
             deadline: Date.now() + 60 * 5 * 1000, // 5 minutes
           };
           console.log("txData", txData);
+
+          const message = {
+            from: txData.from,
+            to: txData.to,
+            value: txData.value,
+            data: txData.data,
+            gaslimit: txData.gaslimit,
+            nonce: txData.nonce,
+            deadline: txData.deadline,
+          };
+          const { domain, types, values } = generateMsgDataCallPermit(
+            message,
+            MOONBASE_ALPHA_CALL_PERMIT_ADDRESS
+          );
           const signature = await generateSignature(
-            txData.from,
-            txData.to,
-            txData.value,
-            txData.data,
-            txData.gaslimit,
-            txData.nonce,
-            txData.deadline,
+            domain,
+            types,
+            values,
             await getSigner()
           );
           const ethersSignature = ethers.utils.splitSignature(signature);
@@ -365,7 +413,7 @@ export const ContractFunctions = ({
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              rpcURL: process.env.NEXT_PUBLIC_MOONBASE_ALPHA_RPC_URL as string,
+              rpcURL: provider!.connection.url,
               transactionData: encodedFunctionData,
               to: MOONBASE_ALPHA_CALL_PERMIT_ADDRESS,
             }),
@@ -384,11 +432,89 @@ export const ContractFunctions = ({
             tx = await contract[functionName](...functionArgs, {
               value: value,
             });
+            receipt = await tx.wait();
           } else {
-            // @ts-ignore
-            tx = await contract[functionName](...functionArgs);
+            console.log("gasless", getIsGasless());
+            if (getIsGasless()) {
+              const forwarderContract = await getForwarderContract();
+              // @ts-ignore
+              let signFunctionData = contract.interface.encodeFunctionData(
+                functionName,
+                functionArgs
+              );
+              const txData = {
+                from: account.address!,
+                to: contract.address,
+                value: value, // It should be 0
+                data: signFunctionData,
+                gaslimit: parseInt(
+                  process.env.NEXT_PUBLIC_GAS_LIMIT ?? "100000"
+                ),
+                // nonce: (await provider?.getTransactionCount(account.address!))!,
+                nonce: parseInt(
+                  (await forwarderContract.nonces(account.address!)).toString()
+                ),
+                deadline: Date.now() + 60 * 5 * 1000, // 5 minutes
+              };
+              console.log("txData", txData);
+
+              const message = {
+                from: txData.from,
+                to: txData.to,
+                value: txData.value,
+                gas: txData.gaslimit,
+                nonce: txData.nonce,
+                deadline: txData.deadline,
+                data: txData.data,
+              };
+              const { domain, types, values } = generateMsgDataForwarder(
+                message,
+                chainId!,
+                forwarderContract.address
+              );
+              const signature = await generateSignature(
+                domain,
+                types,
+                values,
+                await getSigner()
+              );
+              const executeArgs: ERC2771Forwarder.ForwardRequestDataStruct = {
+                from: message.from,
+                to: message.to,
+                value: message.value,
+                gas: message.gas,
+                deadline: message.deadline,
+                data: message.data,
+                signature: signature,
+              };
+              const encodedFunctionData =
+                forwarderContract.interface.encodeFunctionData("execute", [
+                  executeArgs,
+                ]);
+              const res = await fetch(`/api/ExecuteAny`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  rpcURL: provider!.connection.url,
+                  transactionData: encodedFunctionData,
+                  to: forwarderContract.address,
+                }),
+              });
+
+              const { txReceipt, txResponse } = (await res.json()) as {
+                txResponse: ethers.providers.TransactionResponse;
+                txReceipt: ethers.providers.TransactionReceipt;
+              };
+              // return { success: true, txReceipt };
+              receipt = txReceipt;
+            } else {
+              // @ts-ignore
+              tx = await contract[functionName](...functionArgs);
+              receipt = await tx.wait();
+            }
           }
-          receipt = await tx.wait();
         }
         console.log("result", receipt);
         const r = { result: receipt };
@@ -410,6 +536,7 @@ export const ContractFunctions = ({
     // account,
     connected,
     provider,
+    isGasless,
   ]);
 
   const [chainIdChanged, setChainIdChanged] = useState(false);
@@ -417,15 +544,17 @@ export const ContractFunctions = ({
   useEffect(() => {
     if (account.isConnected) {
       setConnected(true);
-      const ethersProvider = getEthersProvider(config);
+      const ethersProvider = getEthersProvider(
+        config
+      ) as ethers.providers.JsonRpcProvider;
       setProvider(ethersProvider);
-      if (chainId && chainId != account.chainId) {
+      if (chainId && chainId != account.chainId?.toString()) {
         setChainIdChanged(true);
         // onSwitchNetworkCallback.forEach((functionName) => {
         //   sendMessage("ContractManager", functionName);
         // });
       }
-      setChainId(account.chainId);
+      setChainId(account.chainId?.toString() as SupportedChainIds);
     } else {
       setChainId(undefined);
       setConnected(false);
@@ -485,6 +614,16 @@ export const ContractFunctions = ({
     } else {
       throw new Error("Invalid contract name");
     }
+  }
+
+  async function getForwarderContract() {
+    const forwarderContractAddress =
+      contractAddresses[await getChainId()].Forwarder;
+    const forwarder = Forwarder__factory.connect(
+      forwarderContractAddress,
+      (await getSigner())!
+    );
+    return forwarder;
   }
 
   async function getMapContract() {
