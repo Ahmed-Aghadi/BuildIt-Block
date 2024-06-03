@@ -127,7 +127,7 @@ In marketplace listing, if seller owns an ENS account then it will display it so
 
 Also, users can transfer their util items from one chain to another ( using **Polygon LxLy bridge** and **CCIP** ). **Polygon LxLy bridge** is used to transfer utils items from **Polygon ZKEVM Cardona Testnet** to **Sepolia** and vice versa whereas **Chainlink CCIP** is used to transfer utils items between **Avalanche Fuji Testet**, **Polygon Amoy**.
 
-User can toggle **Gasless** switch on top of the screen to experience gasless transactions using ERC2771 context but transaction won't be gasless if user is trying to buy on marketplace as it would involves transferring of native tokens from user and ERC2771 context would expect relayer to transfer the native tokens. Whereas User can experience **complete gasless experience** for **Moonbase Alpha** using **Moonbeam's Call Permit Precompile**.
+User can toggle **Gasless** switch on top of the screen to experience gasless transactions using ERC2771 context but transaction won't be gasless if user is trying to buy something on marketplace as it would involves transferring of native tokens from user and ERC2771 context would expect relayer to transfer the native tokens. Whereas User can experience **complete gasless experience** for **Moonbase Alpha** using **Moonbeam's Call Permit Precompile**.
 
 Contracts are deployed on **Sepolia**, **Polygon ZKEVM Cardona Testnet**, **Avalanche Fuji Testnet**, **Polygon Amoy**, **Scroll Sepolia**, **Metis Sepolia**, **ZKSync Sepolia**, **moonbase alpha**.
 
